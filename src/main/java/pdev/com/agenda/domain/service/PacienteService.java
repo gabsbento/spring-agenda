@@ -35,8 +35,8 @@ public class PacienteService {
         pacienteRepository.deleteById(id);
     }
 
-    public Paciente buscarPorId(Long id){
-        return pacienteRepository.findById(id).orElse(null);
+    public Optional<Paciente> buscarPorId(Long id){
+        return pacienteRepository.findById(id);
     }
 
     public List<Paciente> buscarTodos(){
