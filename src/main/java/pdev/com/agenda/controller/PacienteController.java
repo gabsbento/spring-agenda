@@ -8,6 +8,7 @@ import pdev.com.agenda.domain.entity.Paciente;
 import pdev.com.agenda.domain.service.PacienteService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("paciente")
@@ -31,8 +32,11 @@ public class PacienteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Paciente> buscarPorId(@PathVariable Long id){
-        Paciente response = pacienteService.buscarPorId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        Optional<Paciente> response = pacienteService.buscarPorId(id);
+        if(response.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(response.get());
     }
 
     @DeleteMapping("/{id}")
