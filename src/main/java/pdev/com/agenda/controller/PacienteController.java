@@ -39,6 +39,16 @@ public class PacienteController {
         return ResponseEntity.status(HttpStatus.OK).body(response.get());
     }
 
+    @PutMapping
+    public ResponseEntity<Paciente> atualizar(@RequestBody Paciente paciente){
+        Optional<Paciente> response = pacienteService.buscarPorId(paciente.getId());
+        if(response.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        Paciente updatePaciente = pacienteService.salvar(paciente);
+        return ResponseEntity.status(HttpStatus.OK).body(updatePaciente);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity excluir(@PathVariable Long id){
         pacienteService.excluir(id);
