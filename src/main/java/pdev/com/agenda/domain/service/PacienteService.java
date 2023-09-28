@@ -15,8 +15,8 @@ public class PacienteService {
     @Autowired
     private PacienteRepository pacienteRepository;
 
-    public void salvar(Paciente paciente){
-        pacienteRepository.save(paciente);
+    public Paciente salvar(Paciente paciente){
+        return pacienteRepository.save(paciente);
     }
 
     public void excluir(Long id){
