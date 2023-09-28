@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pdev.com.agenda.domain.entity.Paciente;
 import pdev.com.agenda.domain.repository.PacienteRepository;
+import pdev.com.agenda.exception.BusinessException;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,17 @@ public class PacienteService {
     private PacienteRepository pacienteRepository;
 
     public Paciente salvar(Paciente paciente){
+        boolean existeCpf = false;
+        Optional<Paciente> optPaciente = pacienteRepository.findByCpf(paciente.getCpf());
+        if(optPaciente.isPresent()){
+            if(!optPaciente.get().getId().equals(paciente.getId())){
+                existeCpf = true;
+            }
+        }
+
+        if(existeCpf){
+            throw new BusinessException("CPF já cadastrado");
+        }
         return pacienteRepository.save(paciente);
     }
 
