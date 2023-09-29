@@ -48,17 +48,11 @@ public class PacienteController {
         return ResponseEntity.status(HttpStatus.OK).body(pacienteMapper.toPacienteResponse(response.get()));
     }
 
-    @PutMapping
-    public ResponseEntity<PacienteResponse> atualizar(@RequestBody PacienteRequest request){
+    @PutMapping("/{id}")
+    public ResponseEntity<PacienteResponse> atualizar(@PathVariable Long id, @RequestBody PacienteRequest request){
         Paciente paciente = pacienteMapper.toPaciente(request);
 
-        Optional<Paciente> response = pacienteService.buscarPorId(paciente.getId());
-
-        if(response.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        Paciente updatePaciente = pacienteService.salvar(paciente);
+        Paciente updatePaciente = pacienteService.alterar(id, paciente);
         return ResponseEntity.status(HttpStatus.OK).body(pacienteMapper.toPacienteResponse(updatePaciente));
     }
 
