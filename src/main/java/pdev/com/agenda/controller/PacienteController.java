@@ -6,6 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pdev.com.agenda.domain.entity.Paciente;
 import pdev.com.agenda.domain.service.PacienteService;
+import pdev.com.agenda.mapper.PacienteMapper;
+import pdev.com.agenda.request.PacienteRequest;
+import pdev.com.agenda.response.PacienteResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,35 +21,45 @@ public class PacienteController {
     @Autowired
     private PacienteService pacienteService;
 
+    @Autowired
+    private PacienteMapper pacienteMapper;
+
     @PostMapping
-    public ResponseEntity<Paciente> criar(@RequestBody Paciente paciente){
-        Paciente response = pacienteService.salvar(paciente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<PacienteResponse> criar(@RequestBody PacienteRequest request){
+        Paciente paciente = pacienteMapper.toPaciente(request);
+        Paciente pacienteSalvo = pacienteService.salvar(paciente);
+        PacienteResponse pacienteResponse = pacienteMapper.toPacienteResponse(pacienteSalvo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pacienteResponse);
     }
 
     @GetMapping
-    public ResponseEntity<List<Paciente>> listar(){
-        List<Paciente> response = pacienteService.buscarTodos();
+    public ResponseEntity<List<PacienteResponse>> listar(){
+        List<Paciente> pacientes = pacienteService.buscarTodos();
+        List<PacienteResponse> response = pacienteMapper.toPacientesResponseList(pacientes);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Paciente> buscarPorId(@PathVariable Long id){
+    public ResponseEntity<PacienteResponse> buscarPorId(@PathVariable Long id){
         Optional<Paciente> response = pacienteService.buscarPorId(id);
         if(response.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(response.get());
+        return ResponseEntity.status(HttpStatus.OK).body(pacienteMapper.toPacienteResponse(response.get()));
     }
 
     @PutMapping
-    public ResponseEntity<Paciente> atualizar(@RequestBody Paciente paciente){
+    public ResponseEntity<PacienteResponse> atualizar(@RequestBody PacienteRequest request){
+        Paciente paciente = pacienteMapper.toPaciente(request);
+
         Optional<Paciente> response = pacienteService.buscarPorId(paciente.getId());
+
         if(response.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+
         Paciente updatePaciente = pacienteService.salvar(paciente);
-        return ResponseEntity.status(HttpStatus.OK).body(updatePaciente);
+        return ResponseEntity.status(HttpStatus.OK).body(pacienteMapper.toPacienteResponse(updatePaciente));
     }
 
     @DeleteMapping("/{id}")
