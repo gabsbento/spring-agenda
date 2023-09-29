@@ -1,5 +1,6 @@
 package pdev.com.agenda.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class PacienteController {
     private PacienteMapper pacienteMapper;
 
     @PostMapping
-    public ResponseEntity<PacienteResponse> criar(@RequestBody PacienteRequest request){
+    public ResponseEntity<PacienteResponse> criar(@Valid @RequestBody PacienteRequest request){
         Paciente paciente = pacienteMapper.toPaciente(request);
         Paciente pacienteSalvo = pacienteService.salvar(paciente);
         PacienteResponse pacienteResponse = pacienteMapper.toPacienteResponse(pacienteSalvo);
@@ -49,7 +50,7 @@ public class PacienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PacienteResponse> atualizar(@PathVariable Long id, @RequestBody PacienteRequest request){
+    public ResponseEntity<PacienteResponse> atualizar(@PathVariable Long id, @Valid @RequestBody PacienteRequest request){
         Paciente paciente = pacienteMapper.toPaciente(request);
 
         Paciente updatePaciente = pacienteService.alterar(id, paciente);
