@@ -43,4 +43,15 @@ public class PacienteService {
         return pacienteRepository.findAll();
     }
 
+    public Paciente alterar(Long id, Paciente paciente){
+        Optional<Paciente> response = this.buscarPorId(id);
+
+        if(response.isEmpty()){
+            throw new BusinessException("Paciente não encontrado");
+        }
+
+        paciente.setId(id);
+        return this.salvar(paciente);
+    }
+
 }
