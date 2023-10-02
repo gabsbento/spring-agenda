@@ -1,11 +1,11 @@
 package pdev.com.agenda.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
-@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-public class BusinessException extends  RuntimeException {
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+public class BusinessException {
+    String message;
     public BusinessException(String message) {
-        super(message);
+        this.message = message;
     }
 }

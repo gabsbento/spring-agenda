@@ -26,7 +26,7 @@ public class PacienteService {
         }
 
         if(existeCpf){
-            throw new BusinessException("CPF já cadastrado");
+            throw new RuntimeException();
         }
         return pacienteRepository.save(paciente);
     }
@@ -47,7 +47,7 @@ public class PacienteService {
         Optional<Paciente> response = this.buscarPorId(id);
 
         if(response.isEmpty()){
-            throw new BusinessException("Paciente não encontrado");
+            throw new RuntimeException();
         }
 
         paciente.setId(id);
