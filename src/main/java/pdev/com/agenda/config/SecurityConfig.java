@@ -17,7 +17,7 @@ public class SecurityConfig {
                 (authorize) -> {
                     authorize.requestMatchers("/public").permitAll();
                     authorize.requestMatchers("/logout").permitAll();
-                    authorize.requestMatchers("/paciente").permitAll();
+                    authorize.requestMatchers("/usuario").permitAll();
                     authorize.anyRequest().authenticated();
                 })
                 .formLogin(Customizer.withDefaults())
