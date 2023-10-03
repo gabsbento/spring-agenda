@@ -1,0 +1,1 @@
+ALTER TABLE public.usuario ADD "role" text NOT NULL DEFAULT 'user';
